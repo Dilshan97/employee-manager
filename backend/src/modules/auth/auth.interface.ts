@@ -5,11 +5,14 @@
 import mongoose, { Document } from "mongoose";
 
 interface IAuth {
-  email: string;
   password: string;
   userId: mongoose.Types.ObjectId;
 }
 
 interface IAuthModel extends IAuth, Document {}
+interface ILoginSanitizedInputs {
+  email: string;
+  password: string;
+}
 
-export { IAuth, IAuthModel };
+export { IAuth, IAuthModel, ILoginSanitizedInputs };

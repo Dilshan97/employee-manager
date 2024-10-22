@@ -16,7 +16,7 @@ import { constants } from "./utils/constants";
 import AuthRoutes from "./modules/auth/auth.route";
 import UserRoutes from "./modules/user/user.route";
 import DbConfig from "./config/db.config";
-import commonUtil from "./modules/common/common.util";
+import CommonUtil from "./modules/common/common.util";
 
 // Load environment variables from.env file.
 dotenv.config();
@@ -46,12 +46,13 @@ app.use(ErrorMiddleware.errorHandler);
 
 const start = () => {
   try {
-    const port = process.env.SERVER_PORT;
+    const port = process.env.SERVER_PORT || 4000;
 
     const dbConfig = DbConfig.getDBConfig();
 
     app.listen(port, async () => {
-      await commonUtil.connectDB(dbConfig.MONGODB_URL);
+      await CommonUtil.connectDB(dbConfig.MONGODB_URL);
+      await CommonUtil.onServerStart();
       console.log(`Server is running at http://localhost:${port}`);
     });
   } catch (error) {

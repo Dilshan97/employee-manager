@@ -4,10 +4,10 @@
  */
 import Joi from "joi";
 import mongoose from "mongoose";
-// import EmployeeUtil from "../employee/employee.util";
 import DataValidationError, {
   TKeyValuePair,
 } from "../error/error.classes/DataValidationError";
+import AuthUtil from "../auth/auth.util";
 
 const connectDB = async (url: string) => {
   return mongoose
@@ -38,7 +38,7 @@ const throwCustomJoiDataValidationError = (
 };
 
 const onServerStart = async () => {
-  // await EmployeeUtil.seedEmployees();
+  await AuthUtil.seedDefaultUsers();
 };
 
 export default {
