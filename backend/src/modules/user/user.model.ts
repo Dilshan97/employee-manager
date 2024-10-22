@@ -24,6 +24,7 @@ const UserSchema: Schema<IUserModel> = new Schema(
       type: String,
       required: [true, "Email address is required"],
       unique: true,
+      lowercase: true,
       validate: {
         validator: (email) => constants.REGEX_VALIDATIONS.EMAIL.test(email),
         message: "{VALUE} is not a valid email",

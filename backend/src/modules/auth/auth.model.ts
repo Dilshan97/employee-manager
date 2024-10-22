@@ -8,10 +8,9 @@ import { constants } from "../../utils/constants";
 
 const AuthSchema: Schema<IAuthModel> = new Schema(
   {
-    email: {
+    _id: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
       lowercase: true,
       validate: {
         validator: (value: string) => {
@@ -30,7 +29,7 @@ const AuthSchema: Schema<IAuthModel> = new Schema(
       required: [true, "User Id is required"],
     },
   },
-  { versionKey: true, timestamps: true }
+  { versionKey: false, timestamps: true }
 );
 
 export default model<IAuthModel>(constants.MODEL_NAMES.AUTH, AuthSchema);
