@@ -15,7 +15,7 @@ const AppLayout: FC<AppLayoutProps> = ({ children }) => {
       <Sidebar />
       <div className="flex flex-col w-full">
         <Header />
-        <div className="h-screen p-10">{children}</div>
+        <div className="h-screen p-10 overflow-scroll">{children}</div>
       </div>
     </div>
   );
