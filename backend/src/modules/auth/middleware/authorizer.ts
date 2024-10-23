@@ -27,11 +27,11 @@ const authorize = (authorizedRoles: string[] = []) => {
       accessToken
     ) as any;
 
-    // if (!authorizedRoles.includes(tokenPayload.role)) {
-    //   throw new UnAuthorizedError(
-    //     "You're not authorized to access this resource!-2"
-    //   );
-    // }
+    if (!authorizedRoles.includes(tokenPayload.role) && !authorizedRoles) {
+      throw new UnAuthorizedError(
+        "You're not authorized to access this resource!-2"
+      );
+    }
 
     //get auth record from cache
     const authRecord = await AuthCacher.getAuthRecord(tokenPayload._id);
