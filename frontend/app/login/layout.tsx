@@ -12,10 +12,10 @@ interface AuthLayoutProps {
 const AuthLayout:FC<AuthLayoutProps> = ({ children }) => {
   return (
     <div className="flex h-screen max-h-screen overflow-hidden">
-      <div className="lg:flex hidden lg:w-6/12">
+      <div className="lg:flex hidden lg:w-7/12">
         <Image src={cover} alt="" className="object-cover w-full h-full"/>
       </div>
-      <div className="flex items-center justify-center bg-white lg:w-6/12 w-full">
+      <div className="flex items-center justify-center bg-white lg:w-5/12 w-full">
         {children}
       </div>
     </div>
