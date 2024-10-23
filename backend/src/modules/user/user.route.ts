@@ -6,29 +6,42 @@ import express from "express";
 import UserController from "./user.controller";
 import UserMiddleware from "./user.middleware";
 import CommonMiddleware from "../common/common.middleware";
+import AuthMiddleware from "../auth/middleware/authorizer";
+import { constants } from "../../utils/constants";
 
 const router = express.Router();
 
 router.post(
-    "/",
-    UserMiddleware.mutateSanitizedInputs, 
-    UserController.createUser
+  "/",
+  AuthMiddleware.authorize([constants.USER_ROLES.ADMIN]),
+  UserMiddleware.mutateSanitizedInputs,
+  UserController.createUser
 );
 
 router.put(
-    "/:id", 
-    UserMiddleware.mutateSanitizedInputs,
-    UserController.updateUser
+  "/:id",
+  AuthMiddleware.authorize([constants.USER_ROLES.ADMIN]),
+  UserMiddleware.mutateSanitizedInputs,
+  UserController.updateUser
 );
 
-router.delete("/:id", UserController.deleteUser);
-
-router.get("/:id", UserController.getUserById);
+router.delete(
+  "/:id",
+  AuthMiddleware.authorize([constants.USER_ROLES.ADMIN]),
+  UserController.deleteUser
+);
 
 router.get(
-    "/",
-    CommonMiddleware.paginate, 
-    UserController.getAllUsers
+  "/:id",
+  AuthMiddleware.authorize([constants.USER_ROLES.ADMIN]),
+  UserController.getUserById
+);
+
+router.get(
+  "/",
+  AuthMiddleware.authorize([constants.USER_ROLES.ADMIN]),
+  CommonMiddleware.paginate,
+  UserController.getAllUsers
 );
 
 export default router;
