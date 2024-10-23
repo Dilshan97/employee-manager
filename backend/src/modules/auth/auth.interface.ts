@@ -3,7 +3,6 @@
 *   All rights reserved.
 */
 import mongoose, { Document } from "mongoose";
-
 interface IAuth {
   password: string;
   userId: mongoose.Types.ObjectId;
@@ -14,5 +13,10 @@ interface ILoginSanitizedInputs {
   email: string;
   password: string;
 }
+interface IAuthRecord {
+  _id: string;
+  role: string;
+  accessToken: string;
+}
 
-export { IAuth, IAuthModel, ILoginSanitizedInputs };
+export { IAuth, IAuthModel, ILoginSanitizedInputs, IAuthRecord };

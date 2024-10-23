@@ -3,7 +3,7 @@
  *   All rights reserved.
  */
 import { Request, Response } from "express";
-import { ILoginSanitizedInputs } from "./auth.interface";
+import { IAuthRecord, ILoginSanitizedInputs } from "./auth.interface";
 import Authenticator from "./useCase/authenticator";
 import { StatusCodes } from "http-status-codes";
 
@@ -18,6 +18,17 @@ const login = async (req: Request, res: Response) => {
   });
 };
 
+const logout = async (req: Request, res: Response) => {
+  const auth = req.auth as IAuthRecord;
+
+  await Authenticator.logout(auth);
+
+  return res.status(StatusCodes.OK).json({
+    message: "Logout Successful!",
+  });
+};
+
 export default {
   login,
+  logout,
 };
