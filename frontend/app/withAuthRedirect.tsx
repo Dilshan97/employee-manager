@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
 
 const withAuthRedirect = (WrappedComponent: React.ComponentType) => {
   const ComponentWithAuthRedirect = (props: any) => {
@@ -10,7 +10,7 @@ const withAuthRedirect = (WrappedComponent: React.ComponentType) => {
 
     useEffect(() => {
       if (token) {
-        router.push('/system-user');
+        router.replace('/system-user');
       }
     }, [token, router]);
 
