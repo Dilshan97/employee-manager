@@ -19,7 +19,7 @@ const mutateSanitizedInputs = async (
       "any.required": "First name is required",
     }),
     lastName: Joi.string().min(6).max(10).required().messages({
-      "string.min": "Last name must be at least 2 characters long",
+      "string.min": "Last name must be at least 6 characters long",
       "string.max": "Last name must not exceed 10 characters",
       "any.required": "Last name is required",
     }),

@@ -18,6 +18,24 @@ export const createSystemUser = createAsyncThunk("systemUser/createSystemUser", 
         return rejectWithValue(error);
     }
 });
+
+export const updateSystemUser = createAsyncThunk("systemUser/updateSystemUser", async (payload: any, { rejectWithValue }) => {
+    try {
+        const response = await getApi().put(`/user/${payload.id}`, payload);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
+export const deleteSystemUser = createAsyncThunk("systemUser/deleteSystemUser", async (id: string, { rejectWithValue }) => {
+    try {
+        const response = await getApi().delete(`/user/${id}`);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
 export interface ISystemUser {
     id: string;
     firstName: string;
@@ -51,8 +69,8 @@ const systemUserSlice = createSlice({
         },
     },
     extraReducers(builder) {
-         //fetch system users
-         builder.addCase(fetchSystemUsers.pending, (state) => {
+        //fetch system users
+        builder.addCase(fetchSystemUsers.pending, (state) => {
             state.loading = true;
             state.error = null;
         }).addCase(fetchSystemUsers.rejected, (state, action) => {
@@ -73,6 +91,33 @@ const systemUserSlice = createSlice({
         }).addCase(createSystemUser.fulfilled, (state, action) => {
             state.loading = false;
             state.data.push(action.payload);
+        })
+
+        //update system user
+        builder.addCase(updateSystemUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        }).addCase(updateSystemUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message || "Failed to update employee";
+        }).addCase(updateSystemUser.fulfilled, (state, action) => {
+            state.loading = false;
+            // state.data.push(action.payload);
+        })
+
+        //delete system user
+        builder.addCase(deleteSystemUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        }).addCase(deleteSystemUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message || "Failed to delete employee";
+        }).addCase(deleteSystemUser.fulfilled, (state, action) => {
+            state.loading = false;
+            const index = state.data.findIndex((systemUser: any) => systemUser.id === action.meta.arg);
+            if (index > -1) {
+                state.data.splice(index, 1);
+            }
         })
     }
 });

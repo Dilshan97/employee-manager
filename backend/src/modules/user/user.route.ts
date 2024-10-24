@@ -39,7 +39,7 @@ router.get(
 
 router.get(
   "/",
-  // AuthMiddleware.authorize([constants.USER_ROLES.ADMIN]),
+  AuthMiddleware.authorize([constants.USER_ROLES.ADMIN]),
   CommonMiddleware.paginate,
   UserController.getAllUsers
 );

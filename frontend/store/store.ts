@@ -3,15 +3,15 @@
  *   All rights reserved.
  */
 import storage from "redux-persist/lib/storage";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
 import authSlice from "./slices/authSlice";
 import systemUserSlice from "./slices/systemUserSlice";
+import { persistStore, persistReducer } from "redux-persist";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["system-user"], // persist state
+    whitelist: ["auth", "system-user"], // persist state
 };
 
 const rootReducer = combineReducers({
