@@ -14,6 +14,15 @@ export const login = createAsyncThunk("auth/login", async (payload: { email: str
   }
 });
 
+export const logout = createAsyncThunk("auth/logout", async ({ rejectWithValue }: any) => {
+  try {
+    const response = await getApi().post("/auth/logout");
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 export interface IAuthState {
   user: any | undefined;
   accessToken: string | undefined;
@@ -33,24 +42,7 @@ const initialState: IAuthState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    login(state, action) {
-      const { user, accessToken } = action.payload;
-      state.user = user;
-      state.accessToken = accessToken;
-    },
-    setUser(state, action) {
-      state.user = action.payload;
-    },
-    setTokens(state, action) {
-      const { accessToken } = action.payload;
-      state.accessToken = accessToken;
-    },
-    logout(state) {
-      state.user = undefined;
-      state.accessToken = undefined;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
       
       //login 
@@ -61,8 +53,23 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to login";
       }).addCase(login.fulfilled, (state, action) => {
+        const { payload } = action.payload;
         state.loading = false;
-        state.accessToken = action.payload.payload.accessToken;
+        // state.user = user;
+        state.accessToken = payload.accessToken;
+      })
+
+      //logout
+      builder.addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      }).addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to login";
+      }).addCase(logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = undefined;
+        state.accessToken = undefined;
       })
   },
 });

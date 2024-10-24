@@ -15,7 +15,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -23,11 +22,6 @@ import {
 } from "@/components/ui/pagination";
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 import {
@@ -35,7 +29,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -58,12 +51,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { systemUserActions } from "@/store/slices/systemUserSlice";
 import useFetchSystemUsers from "@/hooks/useFetchSystemUsers";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
+
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
   const { gridMode } = useSelector((state: RootState) => state.systemUser);
 
   const { loading, systemUsers, error } = useFetchSystemUsers();
+
+  if (error) return <p>Error: {error}</p>;
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <>
@@ -103,16 +103,18 @@ export default function Page() {
 
       {gridMode ? (
         <div className="grid lg:grid-cols-5 grid-cols-2 gap-4">
-          {systemUsers.payload.content.map((systemUser: any) => (
+          {systemUsers?.payload?.content.map((systemUser: any) => (
             <Card key={systemUser.id} className="flex flex-col col-span-1">
               <Image src={user} alt="" className="w-full" />
               <div className="flex flex-col gap-1 p-3 w-full overflow-clip">
-                <p>{systemUser.firstName} {systemUser.lastName}</p>
-                <p>janyjone@gmail.com</p>
-                <p>0987654321</p>
-                <p>Admin</p>
+                <p>
+                  {systemUser.firstName} {systemUser.lastName}
+                </p>
+                <p>{systemUser.email}</p>
+                <p>{systemUser.phoneNumber}</p>
+                <p>{systemUser.gender === "M" ? "Male" : "Female"}</p>
                 <div className="flex justify-between">
-                  <p>0192837291</p>
+                  <p>{systemUser.NIC}</p>
                   <div className="flex items-center gap-2">
                     <Dialog>
                       <DialogTrigger>
@@ -159,23 +161,23 @@ export default function Page() {
               <TableHead className="py-4">Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Contact Number</TableHead>
-              <TableHead className="py-4 text-right">Gender</TableHead>
-              <TableHead className="py-4 text-right">Action</TableHead>
+              <TableHead className="py-4 text-center">Gender</TableHead>
+              <TableHead className="py-4 text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {systemUsers.payload.content.map((systemUser: any) => (
+            {systemUsers?.payload?.content.map((systemUser: any) => (
               <TableRow key={systemUser.id}>
                 <TableCell className="font-medium py-4">
                   {systemUser.firstName} {systemUser.lastName}
                 </TableCell>
                 <TableCell>{systemUser.email}</TableCell>
                 <TableCell>{systemUser.phoneNumber}</TableCell>
-                <TableCell className="text-right">
-                  {systemUser.gender}
+                <TableCell className="text-center">
+                  {systemUser.gender === "M" ? "Male": "Female"}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-center">
                   <div className="flex justify-center gap-2">
                     <Eye size={22} className="cursor-pointer" />
                     <Edit2 size={22} className="cursor-pointer" />
@@ -193,31 +195,21 @@ export default function Page() {
           <PaginationItem>
             <PaginationPrevious href="#" className="border" />
           </PaginationItem>
-
           <div className="flex">
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">4</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">5</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">6</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">7</PaginationLink>
-            </PaginationItem>
+            {[...Array(systemUsers?.payload?.totalPages)].map((_, index) => {
+              const page = index + 1;
+              return (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    href={`?page=${page}`}
+                    isActive={Number(page) === Number(searchParams.get('page') || 1)}
+                    className={Number(page) === Number(searchParams.get('page') || 1) ? "border" : ""}
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
           </div>
 
           <PaginationItem>
