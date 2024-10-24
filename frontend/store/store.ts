@@ -3,9 +3,10 @@
  *   All rights reserved.
  */
 import storage from "redux-persist/lib/storage";
-import systemUserSlice from "./slices/systemUserSlice";
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
+import authSlice from "./slices/authSlice";
+import systemUserSlice from "./slices/systemUserSlice";
 
 const persistConfig = {
     key: "root",
@@ -13,12 +14,14 @@ const persistConfig = {
     whitelist: ["system-user"], // persist state
 };
 
-const persistedReducer = persistReducer(persistConfig, systemUserSlice.reducer);
+const rootReducer = combineReducers({
+    auth: authSlice.reducer,
+    systemUser: systemUserSlice.reducer
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: {
-        systemUser: persistedReducer,
-    },
+    reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false, // Disable serializable check for redux-persist

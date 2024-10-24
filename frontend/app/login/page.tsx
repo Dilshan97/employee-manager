@@ -17,36 +17,29 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-// import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid"; // for show/hide password
 
 import { useState } from "react";
 import { Eye } from "lucide-react";
 import { EyeSlash } from "iconsax-react";
+import useLogin from "@/hooks/useLogin";
 
 export default function Login() {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string(),
-  });
+  const { handleLogin, formSchema } = useLogin();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "john.doe@example.com",
+      password: "123",
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
 
   return (
     <div className="w-full max-w-lg mx-auto p-8">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-6">
           <FormField
             control={form.control}
             name="email"

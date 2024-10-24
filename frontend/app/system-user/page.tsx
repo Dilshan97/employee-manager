@@ -57,54 +57,13 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { systemUserActions } from "@/store/slices/systemUserSlice";
+import useFetchSystemUsers from "@/hooks/useFetchSystemUsers";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
 export default function Page() {
   const dispatch = useDispatch();
   const { gridMode } = useSelector((state: RootState) => state.systemUser);
+
+  const { loading, systemUsers, error } = useFetchSystemUsers();
 
   return (
     <>
@@ -144,11 +103,11 @@ export default function Page() {
 
       {gridMode ? (
         <div className="grid lg:grid-cols-5 grid-cols-2 gap-4">
-          {invoices.map((invoice) => (
-            <Card key={invoice.invoice} className="flex flex-col col-span-1">
+          {systemUsers.payload.content.map((systemUser: any) => (
+            <Card key={systemUser.id} className="flex flex-col col-span-1">
               <Image src={user} alt="" className="w-full" />
               <div className="flex flex-col gap-1 p-3 w-full overflow-clip">
-                <p>Jany Jone</p>
+                <p>{systemUser.firstName} {systemUser.lastName}</p>
                 <p>janyjone@gmail.com</p>
                 <p>0987654321</p>
                 <p>Admin</p>
@@ -200,25 +159,21 @@ export default function Page() {
               <TableHead className="py-4">Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Contact Number</TableHead>
-              <TableHead className="py-4 text-right">Role</TableHead>
-              <TableHead className="py-4 text-right">NIC</TableHead>
+              <TableHead className="py-4 text-right">Gender</TableHead>
               <TableHead className="py-4 text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
+            {systemUsers.payload.content.map((systemUser: any) => (
+              <TableRow key={systemUser.id}>
                 <TableCell className="font-medium py-4">
-                  {invoice.invoice}
+                  {systemUser.firstName} {systemUser.lastName}
                 </TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
+                <TableCell>{systemUser.email}</TableCell>
+                <TableCell>{systemUser.phoneNumber}</TableCell>
                 <TableCell className="text-right">
-                  {invoice.totalAmount}
-                </TableCell>
-                <TableCell className="text-right">
-                  {invoice.totalAmount}
+                  {systemUser.gender}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-center gap-2">
