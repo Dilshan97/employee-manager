@@ -10,11 +10,11 @@ import { StatusCodes } from "http-status-codes";
 const login = async (req: Request, res: Response) => {
   const sanitizedInputs = req.body as ILoginSanitizedInputs;
 
-  const accessToken = await Authenticator.login(sanitizedInputs);
+  const { accessToken, user } = await Authenticator.login(sanitizedInputs);
 
   return res.status(StatusCodes.OK).json({
     message: "Login successful!",
-    payload: { accessToken },
+    payload: { accessToken, user },
   });
 };
 

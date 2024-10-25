@@ -10,9 +10,7 @@ import { IAuthRecord, ILoginSanitizedInputs } from "../auth.interface";
 import AuthCacher from "../auth.cacher";
 import UnAuthorizedError from "../../error/error.classes/UnAuthorizedError";
 
-const login = async (
-  sanitizedInputs: ILoginSanitizedInputs
-): Promise<string> => {
+const login = async (sanitizedInputs: ILoginSanitizedInputs): Promise<any> => {
   const dbUser = await UserService.findByEmail(sanitizedInputs.email);
 
   if (!dbUser) throw new NotFoundError("User not found!");
@@ -49,7 +47,14 @@ const login = async (
     await AuthCacher.updateAuthRecord(authRecord);
   }
 
-  return accessToken;
+  return {
+    accessToken,
+    user: {
+      firstName: dbUser.firstName,
+      lastName: dbUser.lastName,
+      email: dbUser.email,
+    },
+  };
 };
 
 const logout = async (auth: IAuthRecord): Promise<void> => {

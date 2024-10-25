@@ -37,7 +37,7 @@ export const deleteSystemUser = createAsyncThunk("systemUser/deleteSystemUser", 
     }
 });
 export interface ISystemUser {
-    id: string;
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -45,7 +45,7 @@ export interface ISystemUser {
     gender: string;
 }
 interface ISystemUserState {
-    data: any[];
+    data: ISystemUser[];
     pagination: {
         totalElements: number;
         totalPages: number;
@@ -124,7 +124,7 @@ const systemUserSlice = createSlice({
             state.error = action.error.message || "Failed to delete employee";
         }).addCase(deleteSystemUser.fulfilled, (state, action) => {
             state.loading = false;
-            const index = state.data.findIndex(systemUser => systemUser.id === action.meta);
+            const index = state.data.findIndex((systemUser: ISystemUser) => systemUser._id.toString() === action.meta.toString());
             if (index > -1) {
                 state.data.splice(index, 1);
             }
