@@ -4,20 +4,40 @@
  */
 import { z } from "zod";
 import Cookies from "js-cookie";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { AppDispatch } from "@/store/store";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { login, logout } from "@/store/slices/authSlice";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const useLogin = () => {
+  const { toast } = useToast();
+  const router = useRouter();
+  const dispatch: AppDispatch = useDispatch();
+
   const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string(),
+    email: z
+      .string({
+        required_error: "Email is required",
+      })
+      .email({
+        message: "Invalid Email Address",
+      }),
+    password: z.string({
+      required_error: "Password is required",
+    }),
   });
 
-  const dispatch: AppDispatch = useDispatch();
-  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "john.doe@example.com",
+      password: "123",
+    },
+  });
 
   const handleLogin = useCallback(
     async (values: z.infer<typeof formSchema>) => {
@@ -26,26 +46,37 @@ const useLogin = () => {
           .unwrap()
           .then((res) => {
             Cookies.set("accessToken", res.payload.accessToken);
-            router.push("/system-user");
+            router.replace("/system-user");
+            toast({
+              variant: "default",
+              title: "Success",
+              description: res.message,
+            });
           });
-      } catch (error) {
-        console.error("Form submission failed", error);
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Success",
+          description: error || "Form submission failed",
+        });
       }
     },
-    [dispatch, router]
+    [dispatch, router, toast]
   );
 
   const handleLogout = useCallback(async () => {
-    await dispatch(logout('')).unwrap().then(() => {
-      Cookies.remove("accessToken");
-      router.replace("/");
-    });
+    await dispatch(logout(""))
+      .unwrap()
+      .then(() => {
+        Cookies.remove("accessToken");
+        router.replace("/");
+      });
   }, [dispatch, router]);
 
   return {
+    form,
     handleLogin,
-    formSchema,
-    handleLogout
+    handleLogout,
   };
 };
 

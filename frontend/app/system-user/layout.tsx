@@ -4,6 +4,7 @@
 */
 import AppLayout from "@/components/layout/layout";
 import { FC } from "react";
+import { Toaster } from "@/components/ui/toaster"
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -11,6 +12,7 @@ interface LayoutProps {
 const Layout:FC<LayoutProps> = ({ children }) => {
   return (
     <AppLayout>
+      <Toaster />
       {children}
     </AppLayout>
   );

@@ -10,7 +10,7 @@ const withAuthRedirect = (WrappedComponent: React.ComponentType) => {
 
     useEffect(() => {
       if (token) {
-        router.replace('/system-user');
+        router.push('/system-user');
       }
     }, [token, router]);
 
