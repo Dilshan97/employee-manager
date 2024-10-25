@@ -12,6 +12,7 @@ const useFetchSystemUsers = () => {
 
   const {
     data: systemUsers,
+    pagination,
     loading,
     gridMode,
     error,
@@ -29,6 +30,7 @@ const useFetchSystemUsers = () => {
 
   return {
     systemUsers,
+    pagination,
     loading,
     gridMode,
     error,

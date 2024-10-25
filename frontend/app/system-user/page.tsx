@@ -20,9 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Card,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 import {
   Dialog,
@@ -31,6 +29,17 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -52,19 +61,22 @@ import { RootState } from "@/store/store";
 import { systemUserActions } from "@/store/slices/systemUserSlice";
 import useFetchSystemUsers from "@/hooks/useFetchSystemUsers";
 import { useSearchParams } from "next/navigation";
+import useDeleteSystemUser from "@/hooks/useDeleteSystemUser";
 
 export default function Page() {
-
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const { gridMode } = useSelector((state: RootState) => state.systemUser);
 
-  const { loading, systemUsers, error } = useFetchSystemUsers();
+  const { loading, systemUsers, error, pagination } = useFetchSystemUsers();
+  const { handleDelete } = useDeleteSystemUser();
 
   if (error) return <p>Error: {error}</p>;
 
   if (loading) return <p>Loading...</p>;
 
+  console.log(systemUsers);
+  
   return (
     <>
       <div className="flex flex-col gap-3 mb-6">
@@ -103,7 +115,7 @@ export default function Page() {
 
       {gridMode ? (
         <div className="grid lg:grid-cols-5 grid-cols-2 gap-4">
-          {systemUsers?.payload?.content.map((systemUser: any) => (
+          {systemUsers?.map((systemUser: any) => (
             <Card key={systemUser.id} className="flex flex-col col-span-1">
               <Image src={user} alt="" className="w-full" />
               <div className="flex flex-col gap-1 p-3 w-full overflow-clip">
@@ -144,10 +156,29 @@ export default function Page() {
                       </DialogContent>
                     </Dialog>
 
-                    <Link href="/system-user/edit/123">
+                    <Link href={`/system-user/edit/${systemUser._id}`}>
                       <Edit2 size={18} className="cursor-pointer" />
                     </Link>
-                    <Trash size={18} className="cursor-pointer" />
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Trash size={18} className="cursor-pointer" />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete from database.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => handleDelete(systemUser._id)}>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               </div>
@@ -167,7 +198,7 @@ export default function Page() {
           </TableHeader>
 
           <TableBody>
-            {systemUsers?.payload?.content.map((systemUser: any) => (
+            {systemUsers?.map((systemUser: any) => (
               <TableRow key={systemUser.id}>
                 <TableCell className="font-medium py-4">
                   {systemUser.firstName} {systemUser.lastName}
@@ -175,13 +206,34 @@ export default function Page() {
                 <TableCell>{systemUser.email}</TableCell>
                 <TableCell>{systemUser.phoneNumber}</TableCell>
                 <TableCell className="text-center">
-                  {systemUser.gender === "M" ? "Male": "Female"}
+                  {systemUser.gender === "M" ? "Male" : "Female"}
                 </TableCell>
                 <TableCell className="text-center">
                   <div className="flex justify-center gap-2">
                     <Eye size={22} className="cursor-pointer" />
-                    <Edit2 size={22} className="cursor-pointer" />
-                    <Trash size={22} className="cursor-pointer" />
+                    <Link href={`/system-user/edit/${systemUser._id}`}>
+                      <Edit2 size={22} className="cursor-pointer" />
+                    </Link>
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Trash size={22} className="cursor-pointer" />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete from database.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction type="button" onClick={() => handleDelete(systemUser._id)}>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </TableCell>
               </TableRow>
@@ -196,14 +248,20 @@ export default function Page() {
             <PaginationPrevious href="#" className="border" />
           </PaginationItem>
           <div className="flex">
-            {[...Array(systemUsers?.payload?.totalPages)].map((_, index) => {
+            {[...Array(pagination?.totalPages)].map((_, index) => {
               const page = index + 1;
               return (
                 <PaginationItem key={page}>
                   <PaginationLink
                     href={`?page=${page}`}
-                    isActive={Number(page) === Number(searchParams.get('page') || 1)}
-                    className={Number(page) === Number(searchParams.get('page') || 1) ? "border" : ""}
+                    isActive={
+                      Number(page) === Number(searchParams.get("page") || 1)
+                    }
+                    className={
+                      Number(page) === Number(searchParams.get("page") || 1)
+                        ? "border"
+                        : ""
+                    }
                   >
                     {page}
                   </PaginationLink>
