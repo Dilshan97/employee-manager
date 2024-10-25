@@ -75,8 +75,6 @@ export default function Page() {
 
   if (loading) return <p>Loading...</p>;
 
-  console.log(systemUsers);
-  
   return (
     <>
       <div className="flex flex-col gap-3 mb-6">
