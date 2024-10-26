@@ -37,16 +37,21 @@ export const deleteSystemUser = createAsyncThunk("systemUser/deleteSystemUser", 
     }
 });
 export interface ISystemUser {
-    id: string;
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string;
     gender: string;
+    NIC: string;
+    role: string;
 }
 interface ISystemUserState {
-    // data: ISystemUser[];
-    data: any;
+    data: ISystemUser[];
+    pagination: {
+        totalElements: number;
+        totalPages: number;
+    };
     loading: boolean;
     error: string | null;
     gridMode: boolean;
@@ -54,10 +59,14 @@ interface ISystemUserState {
 }
 const initialState: ISystemUserState = {
     data: [],
+    pagination: {
+        totalElements: 0,
+        totalPages: 0
+    },
     loading: false,
     error: null,
     gridMode: false,
-    systemUser: undefined
+    systemUser: undefined,
 };
 
 const systemUserSlice = createSlice({
@@ -78,7 +87,10 @@ const systemUserSlice = createSlice({
             state.error = action.error.message || "Failed to fetch employees";
         }).addCase(fetchSystemUsers.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload;
+            const { payload } = action.payload;
+            state.data = payload.content;
+            state.pagination.totalElements = payload.totalElements;
+            state.pagination.totalPages = payload.totalPages;
         })
 
         //create system user
@@ -114,7 +126,7 @@ const systemUserSlice = createSlice({
             state.error = action.error.message || "Failed to delete employee";
         }).addCase(deleteSystemUser.fulfilled, (state, action) => {
             state.loading = false;
-            const index = state.data.findIndex((systemUser: any) => systemUser.id === action.meta.arg);
+            const index = state.data.findIndex((systemUser: ISystemUser) => systemUser._id.toString() === action.meta.arg.toString());
             if (index > -1) {
                 state.data.splice(index, 1);
             }

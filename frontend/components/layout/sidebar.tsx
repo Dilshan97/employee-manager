@@ -2,13 +2,19 @@
  *   Copyright (c) 2024 Dilshan Ramesh
  *   All rights reserved.
  */
+"use client"
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import avatar from "@/assets/images/avatar.png";
 import { ArrowDown2, User } from "iconsax-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const Sidebar = () => {
+
+  const { user } = useSelector((state: RootState) => state.auth);
+
   return (
     <div className="h-screen max-h-screen min-w-60 max-w-60 bg-[#151718] flex flex-col justify-between">
       <div>
@@ -32,10 +38,10 @@ const Sidebar = () => {
           <Image src={avatar} alt="" className="w-12" />
           <div className="flex flex-col items-start gap-1">
             <div className="flex items-center gap-1">
-              <h1 className="text-white text-sm font-bold">Jany Jone</h1>
+              <h1 className="text-white text-sm font-bold">{user?.firstName} {user?.lastName}</h1>
               <ArrowDown2 size={16} className="text-gray-400" />
             </div>
-            <h1 className="text-gray-400 text-xs">janyjone@gmail.com</h1>
+            <h1 className="text-gray-400 text-xs">{user?.email}</h1>
           </div>
         </div>
       </div>

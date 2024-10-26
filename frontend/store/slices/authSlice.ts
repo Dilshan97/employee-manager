@@ -23,8 +23,13 @@ export const logout = createAsyncThunk("auth/logout", async ({ rejectWithValue }
   }
 });
 
+interface IAuthUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 export interface IAuthState {
-  user: any | undefined;
+  user: IAuthUser | undefined;
   accessToken: string | undefined;
   data: any;
   loading: boolean;
@@ -55,7 +60,7 @@ const authSlice = createSlice({
       }).addCase(login.fulfilled, (state, action) => {
         const { payload } = action.payload;
         state.loading = false;
-        // state.user = user;
+        state.user = payload.user;
         state.accessToken = payload.accessToken;
       })
 
