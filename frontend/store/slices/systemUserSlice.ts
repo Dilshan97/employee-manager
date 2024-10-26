@@ -5,8 +5,12 @@
 import { getApi } from "@/utils/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchSystemUsers = createAsyncThunk("systemUser/fetchSystemUsers", async ({ page, limit }: any) => {
-    const response = await getApi().get(`/user?page=${page}&limit=${limit}`);
+export const fetchSystemUsers = createAsyncThunk("systemUser/fetchSystemUsers", async ({ page, limit, keyword }: any) => {
+    let url = `/user?page=${page}&limit=${limit}`;
+    if (keyword) {
+        url += `&keyword=${encodeURIComponent(keyword)}`;
+    }
+    const response = await getApi().get(url);
     return response.data;
 });
 

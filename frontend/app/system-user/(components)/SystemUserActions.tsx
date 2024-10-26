@@ -5,6 +5,7 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useDebounce from "@/hooks/useDebounce";
 import { systemUserActions } from "@/store/slices/systemUserSlice";
 import { RootState } from "@/store/store";
 import { Add, Category, Filter, Firstline } from "iconsax-react";
@@ -15,12 +16,20 @@ import { useDispatch, useSelector } from "react-redux";
 const SystemUserActions = () => {
   const dispatch = useDispatch();
   const { gridMode } = useSelector((state: RootState) => state.systemUser);
+  const { setSearchTerm } = useDebounce();
 
   return (
     <div className="flex flex-col gap-3 mb-6">
       <h1 className="text-xl text-gray-500">System User</h1>
       <div className="flex justify-between items-center">
-        <Input type="text" placeholder="Search" className="w-1/3 rounded-lg" />
+        <Input
+          type="text"
+          placeholder="Search"
+          className="w-1/3 rounded-lg"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchTerm(event.target.value)
+          }
+        />
         <div className="flex gap-4">
           <Button
             variant="outline"
