@@ -24,61 +24,31 @@ const useUpdateSystemUser = ({ userId }: useUpdateSystemUserProps) => {
 
   const formSchema = z.object({
     firstName: z
-      .string({
-        required_error: "First Name is required",
-      })
-      .min(6, {
-        message: "First Name should be at least 6 characters long",
-      })
-      .max(10, {
-        message: "First Name should not exceed 10 characters",
-      }),
+      .string({ required_error: "First Name is required" })
+      .min(6, { message: "First Name should be at least 6 characters long" })
+      .max(10, { message: "First Name should not exceed 10 characters" }),
     lastName: z
-      .string({
-        message: "Last Name is required",
-      })
-      .min(6, {
-        message: "Last Name should be at least 6 characters long",
-      })
-      .max(10, {
-        message: "Last Name should not exceed 10 characters",
-      }),
+      .string({ required_error: "Last Name is required" })
+      .min(6, { message: "Last Name should be at least 6 characters long" })
+      .max(10, { message: "Last Name should not exceed 10 characters" }),
     email: z
-      .string({
-        required_error: "Email is required",
-      })
-      .email({
-        message: "Invalid Email Address",
-      })
-      .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
-        message: "Invalid Email Address format",
-      }),
+      .string({ required_error: "Email is required" })
+      .email({ message: "Invalid Email Address" }),
     phoneNumber: z
-      .string({
-        required_error: "Phone Number is required",
-      })
-      .regex(/^\+94\d{9}$/, {
-        message: "Invalid Phone Number format",
-      }),
+      .string({ required_error: "Phone Number is required" })
+      .regex(/^\+94\d{9}$/, { message: "Invalid Phone Number format" }),
     gender: z.enum(["M", "F"], {
       required_error: "Gender is required",
-      invalid_type_error: "Gender must be either 'M' or 'F'",
     }),
-    role: z.string({
-      required_error: "Role is required",
-    }),
+    role: z.string({ required_error: "Role is required" }),
     NIC: z
-      .string({
-        required_error: "NIC is required",
-      })
-      .regex(/^[0-9]{9}[vVxX]$/, {
-        message: "Invalid NIC number format",
-      }),
+      .string({ required_error: "NIC is required" })
+      .regex(/^[0-9]{9}[vVxX]$/, { message: "Invalid NIC number format" }),
   });
 
+  // Fetch user data when component loads
   useEffect(() => {
     dispatch(systemUserActions.setSystemUser(userId));
-
     return () => {
       dispatch(systemUserActions.resetSystemUser());
     };
@@ -89,28 +59,31 @@ const useUpdateSystemUser = ({ userId }: useUpdateSystemUserProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: systemUser?.firstName,
-      lastName: undefined,
-      email: undefined,
-      phoneNumber: undefined,
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
       gender: undefined,
-      role: undefined,
-      NIC: undefined,
+      role: "",
+      NIC: "",
     },
   });
 
   useEffect(() => {
     if (systemUser) {
-      form.setValue("firstName", systemUser.firstName);
-      form.setValue("lastName", systemUser.lastName);
-      form.setValue("email", systemUser.email);
-      form.setValue("phoneNumber", systemUser.phoneNumber);
-      form.setValue("role", systemUser.role);
-      form.setValue("NIC", systemUser.NIC);
-      form.setValue("gender", systemUser.gender == "M" ? "M" : "F");
+      form.reset({
+        firstName: systemUser.firstName || "",
+        lastName: systemUser.lastName || "",
+        email: systemUser.email || "",
+        phoneNumber: systemUser.phoneNumber || "",
+        gender: systemUser.gender === "M" ? "M" : "F", 
+        role: systemUser.role || "user",
+        NIC: systemUser.NIC,
+      });
     }
-  }, [form, systemUser]);
+  }, [systemUser, form]);
 
+  // Handle form submission
   const handleUserCreate = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       try {
@@ -128,8 +101,8 @@ const useUpdateSystemUser = ({ userId }: useUpdateSystemUserProps) => {
       } catch (error: any) {
         toast({
           variant: "destructive",
-          title: "Success",
-          description: error || "Form submission failed",
+          title: "Error",
+          description: error.message || "Form submission failed",
         });
       }
     },

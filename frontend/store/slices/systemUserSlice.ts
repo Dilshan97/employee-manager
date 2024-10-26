@@ -124,7 +124,8 @@ const systemUserSlice = createSlice({
             state.error = action.error.message || "Failed to create employee";
         }).addCase(createSystemUser.fulfilled, (state, action) => {
             state.loading = false;
-            state.data.push(action.payload);
+            const { payload } = action.payload;
+            state.data.push(payload);
         })
 
         //update system user
@@ -134,9 +135,8 @@ const systemUserSlice = createSlice({
         }).addCase(updateSystemUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message || "Failed to update employee";
-        }).addCase(updateSystemUser.fulfilled, (state, action) => {
+        }).addCase(updateSystemUser.fulfilled, (state) => {
             state.loading = false;
-            // state.data.push(action.payload);
         })
 
         //delete system user

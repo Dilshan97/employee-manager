@@ -23,11 +23,11 @@ const GridView: FC<GridViewProps> = ({ data, handleDelete }) => {
         <Card key={systemUser._id} className="flex flex-col col-span-1">
           <Image src={user} alt="" className="w-full" />
           <div className="flex flex-col gap-1 p-3 w-full overflow-clip">
-            <p>
+            <p className="break-words">
               {systemUser.firstName} {systemUser.lastName}
             </p>
-            <p>{systemUser.email}</p>
-            <p>{systemUser.phoneNumber}</p>
+            <p className="break-words">{systemUser.email}</p>
+            <p className="break-words">{systemUser.phoneNumber}</p>
             <p>{systemUser.gender === "M" ? "Male" : "Female"}</p>
             <div className="flex justify-between">
               <p>{systemUser.NIC}</p>

@@ -12,8 +12,6 @@ const useDebounce = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(searchTerm);
-
     const handler = setTimeout(() => {
       setDebouncedTerm(searchTerm);
     }, 500);
