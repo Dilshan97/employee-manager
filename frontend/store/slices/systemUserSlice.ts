@@ -43,6 +43,8 @@ export interface ISystemUser {
     email: string;
     phoneNumber: string;
     gender: string;
+    NIC: string;
+    role: string;
 }
 interface ISystemUserState {
     data: ISystemUser[];
@@ -124,7 +126,7 @@ const systemUserSlice = createSlice({
             state.error = action.error.message || "Failed to delete employee";
         }).addCase(deleteSystemUser.fulfilled, (state, action) => {
             state.loading = false;
-            const index = state.data.findIndex((systemUser: ISystemUser) => systemUser._id.toString() === action.meta.toString());
+            const index = state.data.findIndex((systemUser: ISystemUser) => systemUser._id.toString() === action.meta.arg.toString());
             if (index > -1) {
                 state.data.splice(index, 1);
             }
