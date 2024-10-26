@@ -5,8 +5,8 @@
 import { getApi } from "@/utils/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchSystemUsers = createAsyncThunk("systemUser/fetchSystemUsers", async () => {
-    const response = await getApi().get("/user");
+export const fetchSystemUsers = createAsyncThunk("systemUser/fetchSystemUsers", async ({ page, limit }: any) => {
+    const response = await getApi().get(`/user?page=${page}&limit=${limit}`);
     return response.data;
 });
 
@@ -19,7 +19,7 @@ export const createSystemUser = createAsyncThunk("systemUser/createSystemUser", 
     }
 });
 
-export const updateSystemUser = createAsyncThunk("systemUser/updateSystemUser", async ({ id, payload}: any, { rejectWithValue }) => {
+export const updateSystemUser = createAsyncThunk("systemUser/updateSystemUser", async ({ id, payload }: any, { rejectWithValue }) => {
     try {
         const response = await getApi().put(`/user/${id}`, payload);
         return response.data;
@@ -46,12 +46,15 @@ export interface ISystemUser {
     NIC: string;
     role: string;
 }
+export interface IPagination {
+    page: number;
+    limit: number;
+    totalElements: number;
+    totalPages: number;
+}
 interface ISystemUserState {
     data: ISystemUser[];
-    pagination: {
-        totalElements: number;
-        totalPages: number;
-    };
+    pagination: IPagination;
     loading: boolean;
     error: string | null;
     gridMode: boolean;
@@ -60,6 +63,8 @@ interface ISystemUserState {
 const initialState: ISystemUserState = {
     data: [],
     pagination: {
+        page: 1,
+        limit: 8,
         totalElements: 0,
         totalPages: 0
     },
@@ -85,6 +90,9 @@ const systemUserSlice = createSlice({
         },
         resetSystemUser(state) {
             state.systemUser = undefined;
+        },
+        setPage: (state, action) => {
+            state.pagination.page = action.payload;
         },
     },
     extraReducers(builder) {

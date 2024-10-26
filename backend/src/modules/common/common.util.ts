@@ -8,6 +8,7 @@ import DataValidationError, {
   TKeyValuePair,
 } from "../error/error.classes/DataValidationError";
 import AuthUtil from "../auth/auth.util";
+import UserUtil from "../user/user.util";
 
 const connectDB = async (url: string) => {
   return mongoose
@@ -39,6 +40,7 @@ const throwCustomJoiDataValidationError = (
 
 const onServerStart = async () => {
   await AuthUtil.seedDefaultUsers();
+  await UserUtil.seedUsers();
 };
 
 export default {

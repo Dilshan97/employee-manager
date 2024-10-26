@@ -21,12 +21,12 @@ const useFetchSystemUsers = () => {
   useEffect(() => {
     let unmounted = false;
     if (!unmounted) {
-      dispatch(fetchSystemUsers());
+      dispatch(fetchSystemUsers({ page: pagination.page, limit: pagination.limit }));
     }
     return () => {
       unmounted = true;
     };
-  }, [dispatch]);
+  }, [dispatch, pagination]);
 
   return {
     systemUsers,
