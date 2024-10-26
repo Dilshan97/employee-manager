@@ -46,14 +46,15 @@ export interface ISystemUser {
     NIC: string;
     role: string;
 }
+export interface IPagination {
+    page: number;
+    limit: number;
+    totalElements: number;
+    totalPages: number;
+}
 interface ISystemUserState {
     data: ISystemUser[];
-    pagination: {
-        page: number;
-        limit: number;
-        totalElements: number;
-        totalPages: number;
-    };
+    pagination: IPagination;
     loading: boolean;
     error: string | null;
     gridMode: boolean;
