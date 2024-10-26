@@ -22,9 +22,11 @@ import {
 } from "@/components/ui/select";
 import useUpdateSystemUser from "@/hooks/useUpdateSystemUser";
 
-export default function Page() {
+export default function Page({ params: { userId }}: {
+  params: { userId: string }
+}) {
 
-  const { form, handleUserCreate } = useUpdateSystemUser();
+  const { form, handleUserCreate } = useUpdateSystemUser({ userId: userId });
   
   return (
     <div className="flex flex-col gap-3 mb-6">
