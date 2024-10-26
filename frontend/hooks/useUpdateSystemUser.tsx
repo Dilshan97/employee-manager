@@ -11,7 +11,6 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  createSystemUser,
   systemUserActions,
   updateSystemUser,
 } from "@/store/slices/systemUserSlice";
