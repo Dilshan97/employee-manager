@@ -19,9 +19,9 @@ export const createSystemUser = createAsyncThunk("systemUser/createSystemUser", 
     }
 });
 
-export const updateSystemUser = createAsyncThunk("systemUser/updateSystemUser", async (payload: any, { rejectWithValue }) => {
+export const updateSystemUser = createAsyncThunk("systemUser/updateSystemUser", async ({ id, payload}: any, { rejectWithValue }) => {
     try {
-        const response = await getApi().put(`/user/${payload.id}`, payload);
+        const response = await getApi().put(`/user/${id}`, payload);
         return response.data;
     } catch (error) {
         return rejectWithValue(error);
@@ -75,6 +75,16 @@ const systemUserSlice = createSlice({
     reducers: {
         toggleMode(state) {
             state.gridMode = !state.gridMode;
+        },
+        setSystemUser(state, action) {
+            const userId = action.payload;
+            const user = state.data.find((systemUser) => systemUser._id === userId);
+            if (user) {
+                state.systemUser = user;
+            }
+        },
+        resetSystemUser(state) {
+            state.systemUser = undefined;
         },
     },
     extraReducers(builder) {
