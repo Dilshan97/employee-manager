@@ -3,8 +3,8 @@
  *   All rights reserved.
  */
 "use client";
-import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
 import { ChartCircle } from "iconsax-react";
 import React, { Suspense } from "react";
 
@@ -24,16 +24,24 @@ import {
 import useFetchSystemUsers from "@/hooks/useFetchSystemUsers";
 import { useSearchParams } from "next/navigation";
 import useDeleteSystemUser from "@/hooks/useDeleteSystemUser";
+import { fetchSystemUsers, systemUserActions } from "@/store/slices/systemUserSlice";
 
 const SystemUsers = () => {
   const searchParams = useSearchParams();
-  const { gridMode } = useSelector((state: RootState) => state.systemUser);
+  const dispatch: AppDispatch = useDispatch();
+
+  const { gridMode, pagination } = useSelector((state: RootState) => state.systemUser);
   const { handleDelete } = useDeleteSystemUser();
-  const { loading, systemUsers, error, pagination } = useFetchSystemUsers();
+  const { loading, systemUsers, error } = useFetchSystemUsers();
 
   if (error) return <p>Error: {error}</p>;
 
   if (loading) return <p>Loading...</p>;
+
+  const handlePageChange = (newPage: number) => {
+    dispatch(systemUserActions.setPage(newPage));
+    dispatch(fetchSystemUsers({ page: newPage, limit: pagination.limit }));
+  };
 
   return (
     <Suspense
@@ -57,6 +65,7 @@ const SystemUsers = () => {
                 <PaginationItem key={page}>
                   <PaginationLink
                     href={`?page=${page}`}
+                    onClick={() => handlePageChange(index + 1)}
                     isActive={
                       Number(page) === Number(searchParams.get("page") || 1)
                     }
