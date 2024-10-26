@@ -14,12 +14,12 @@ export const login = createAsyncThunk("auth/login", async (payload: { email: str
   }
 });
 
-export const logout = createAsyncThunk("auth/logout", async ({ rejectWithValue }: any) => {
+export const logout = createAsyncThunk("auth/logout", async () => {
   try {
     const response = await getApi().post("/auth/logout");
     return response.data;
   } catch (error) {
-    return rejectWithValue(error);
+    console.log(error);
   }
 });
 

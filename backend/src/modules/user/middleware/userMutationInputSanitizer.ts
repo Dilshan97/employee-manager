@@ -3,8 +3,8 @@
  *   All rights reserved.
  */
 import Joi from "joi";
-import CommonUtil from "../common/common.util";
-import { constants } from "../../utils/constants";
+import CommonUtil from "../../common/common.util";
+import { constants } from "../../../utils/constants";
 import { NextFunction, Request, Response } from "express";
 
 const mutateSanitizedInputs = async (

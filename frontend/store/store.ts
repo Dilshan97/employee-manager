@@ -11,7 +11,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["auth", "system-user"], // persist state
+    whitelist: ["auth", "systemUser"], // persist state
 };
 
 const rootReducer = combineReducers({

@@ -6,10 +6,11 @@ import { useEffect } from "react";
 import { fetchSystemUsers } from "@/store/slices/systemUserSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation";
 
 const useFetchSystemUsers = () => {
   const dispatch: AppDispatch = useDispatch();
-
+  const searchParams = useSearchParams(); 
   const {
     data: systemUsers,
     pagination,
@@ -21,12 +22,16 @@ const useFetchSystemUsers = () => {
   useEffect(() => {
     let unmounted = false;
     if (!unmounted) {
-      dispatch(fetchSystemUsers({ page: pagination.page, limit: pagination.limit }));
+      dispatch(fetchSystemUsers({ 
+        page: pagination.page, 
+        limit: pagination.limit, 
+        keyword: searchParams.get('keyword') 
+      }));
     }
     return () => {
       unmounted = true;
     };
-  }, [dispatch, pagination]);
+  }, [dispatch, pagination, searchParams]);
 
   return {
     systemUsers,

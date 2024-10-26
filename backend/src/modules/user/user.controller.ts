@@ -3,7 +3,7 @@
  *   All rights reserved.
  */
 import { Request, Response } from "express";
-import { IUserMutationSanitizedInputs } from "./user.interface";
+import { IUserMutationSanitizedInputs, IUserSanitizedResult } from "./user.interface";
 import { StatusCodes } from "http-status-codes";
 import UserCreator from "./useCase/userCreator";
 import UserUpdater from "./useCase/userUpdater";
@@ -56,7 +56,8 @@ const getUserById = async (req: Request, res: Response) => {
 
 const getAllUsers = async (req: Request, res: Response) => {
   const pagination = req.pageable as IPagination;
-  const dbUsers = await UserGetter.getPaginatedUsers(pagination);
+  const sanitizedResult = req.body.sanitizedResult as IUserSanitizedResult;
+  const dbUsers = await UserGetter.getPaginatedUsers(pagination, sanitizedResult);
 
   return res.status(StatusCodes.OK).json({
     payload: dbUsers,

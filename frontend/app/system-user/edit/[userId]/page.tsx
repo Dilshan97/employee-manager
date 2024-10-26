@@ -25,9 +25,8 @@ import useUpdateSystemUser from "@/hooks/useUpdateSystemUser";
 export default function Page({ params: { userId }}: {
   params: { userId: string }
 }) {
-
   const { form, handleUserCreate } = useUpdateSystemUser({ userId: userId });
-  
+
   return (
     <div className="flex flex-col gap-3 mb-6">
       <h1 className="text-xl text-gray-500">System User Edit</h1>
@@ -46,6 +45,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your First Name"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
+                      value={field.value ?? ""} 
                     />
                   </FormControl>
                   <FormMessage />
@@ -64,6 +64,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your Last Name"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
+                      value={field.value ?? ""} 
                     />
                   </FormControl>
                   <FormMessage />
@@ -82,6 +83,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your email"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
+                      value={field.value ?? ""} 
                     />
                   </FormControl>
                   <FormMessage />
@@ -100,6 +102,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your Contact Number"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
+                      value={field.value ?? ""} 
                     />
                   </FormControl>
                   <FormMessage />
@@ -115,7 +118,7 @@ export default function Page({ params: { userId }}: {
                   <FormLabel>Gender</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value ?? ""} 
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -137,10 +140,10 @@ export default function Page({ params: { userId }}: {
               name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>Role - {field.value}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value ?? ""}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -168,6 +171,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your NIC"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
+                      value={field.value ?? ""} 
                     />
                   </FormControl>
                   <FormMessage />

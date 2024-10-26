@@ -26,5 +26,8 @@ interface IUserMutationSanitizedInputs {
   role: string;
   NIC: string;
 };
+interface IUserSanitizedResult {
+  keyword: string | null;
+}
 
-export { IUser, IUserModel, IUserMutationSanitizedInputs };
+export { IUser, IUserModel, IUserMutationSanitizedInputs, IUserSanitizedResult };

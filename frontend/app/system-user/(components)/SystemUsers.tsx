@@ -18,7 +18,6 @@ import useDeleteSystemUser from "@/hooks/useDeleteSystemUser";
 import SystemUserPagination from "./SystemUserPagination";
 
 const SystemUsers = () => {
-
   const { gridMode, pagination } = useSelector(
     (state: RootState) => state.systemUser
   );
@@ -27,7 +26,16 @@ const SystemUsers = () => {
 
   if (error) return <p>Error: {error}</p>;
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <div className="flex flex-row max-h-screen overflow-hidden justify-center">
+        <div className="flex flex-col gap-2 justify-center items-center">
+          <ChartCircle className="animate-spin text-rose-500" size="40" />
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Suspense
