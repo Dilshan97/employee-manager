@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import UserService from "../user.service";
 import NotFoundError from "../../error/error.classes/NotFoundError";
 import { IPagination } from "../../common/common.interface";
+import { IUserSanitizedResult } from "../user.interface";
 
 const getUserById = async (_id: string | mongoose.Types.ObjectId) => {
   const dbUser = await UserService.findById(_id);
@@ -15,8 +16,8 @@ const getUserById = async (_id: string | mongoose.Types.ObjectId) => {
   return dbUser;
 };
 
-const getPaginatedUsers = async (pagination: IPagination) => {
-  return await UserService.findPaginatedUsers(pagination);
+const getPaginatedUsers = async (pagination: IPagination, sanitizedResult: IUserSanitizedResult) => {
+  return await UserService.findPaginatedUsers(pagination, sanitizedResult);
 };
 
 export default { getUserById, getPaginatedUsers };

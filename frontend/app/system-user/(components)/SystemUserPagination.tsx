@@ -22,7 +22,6 @@ import { useDispatch } from "react-redux";
 interface SystemUserPaginationProps {
   pagination: IPagination;
 }
-
 const SystemUserPagination: FC<SystemUserPaginationProps> = ({
   pagination,
 }) => {

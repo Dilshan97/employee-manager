@@ -3,7 +3,7 @@
  *   All rights reserved.
  */
 import mongoose, { ClientSession } from "mongoose";
-import { IUserModel } from "./user.interface";
+import { IUserModel, IUserSanitizedResult } from "./user.interface";
 import User from "./user.model";
 import { IPagination } from "../common/common.interface";
 
@@ -24,10 +24,37 @@ const findByEmail = async (email: string, session?: ClientSession) => {
   return User.findOne({ email });
 };
 
-const findPaginatedUsers = async (pageable: IPagination) => {
+const findPaginatedUsers = async (
+  pageable: IPagination,
+  sanitizedResult: IUserSanitizedResult
+) => {
   const { page, limit, orderBy } = pageable as IPagination;
 
+  let queryObj: any = {};
+
+  if (sanitizedResult.keyword) {
+    queryObj.$or = [
+      {
+        firstName: {
+          $regex: sanitizedResult.keyword,
+          $options: "i",
+        },
+      },
+      {
+        lastName: {
+          $regex: sanitizedResult.keyword,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
   const result = await User.aggregate([
+    {
+      $match: {
+        ...queryObj,
+      },
+    },
     {
       $sort: {
         _id: orderBy === "desc" ? -1 : 1,
