@@ -1,0 +1,92 @@
+[
+  {
+    "_id": {
+      "$oid": "671ca295d8307616b9e887a2"
+    },
+    "firstName": "Alison",
+    "lastName": "Fernando",
+    "email": "alison.fernando@example.com",
+    "phoneNumber": "+94785670988",
+    "gender": "F",
+    "role": "user",
+    "NIC": "234567890V",
+    "createdAt": {
+      "$date": "2024-10-26T08:04:37.129Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-26T08:04:37.129Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "671ca295d8307616b9e887a5"
+    },
+    "firstName": "Michael",
+    "lastName": "Jayasing",
+    "email": "michael.jayasing@example.com",
+    "phoneNumber": "+94795670989",
+    "gender": "M",
+    "role": "admin",
+    "NIC": "345678901V",
+    "createdAt": {
+      "$date": "2024-10-26T08:04:37.406Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-26T08:04:37.406Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "671ca295d8307616b9e887a8"
+    },
+    "firstName": "Jessica",
+    "lastName": "Gunarat",
+    "email": "jessica.gunarat@example.com",
+    "phoneNumber": "+94805670980",
+    "gender": "F",
+    "role": "user",
+    "NIC": "456789012V",
+    "createdAt": {
+      "$date": "2024-10-26T08:04:37.649Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-26T08:04:37.649Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "671ca296d8307616b9e887b1"
+    },
+    "firstName": "Daniel",
+    "lastName": "Silvaa",
+    "email": "daniel.silva@example.com",
+    "phoneNumber": "+94735670983",
+    "gender": "M",
+    "role": "user",
+    "NIC": "789012345V",
+    "createdAt": {
+      "$date": "2024-10-26T08:04:38.408Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-26T08:04:38.408Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "671ca296d8307616b9e887b7"
+    },
+    "firstName": "Jameson",
+    "lastName": "Niroshan",
+    "email": "jameson.niroshan@example.com",
+    "phoneNumber": "+94755670985",
+    "gender": "M",
+    "role": "admin",
+    "NIC": "901234567V",
+    "createdAt": {
+      "$date": "2024-10-26T08:04:38.895Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-26T08:04:38.895Z"
+    }
+  }
+]
