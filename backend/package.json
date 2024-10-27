@@ -4,7 +4,7 @@
   "description": "employee manager backend",
   "main": "src/server.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "dev:ts": "tsc -w",
     "dev:js": "nodemon build/server.js",
     "dev": "concurrently npm:dev:*",

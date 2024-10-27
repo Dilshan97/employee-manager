@@ -7,6 +7,7 @@ import TestDbConfig from "../../../config/test-db.config";
 import UserUpdater from "../../../modules/user/useCase/userUpdater";
 import { IUserMutationSanitizedInputs } from "../../../modules/user/user.interface";
 import mongoose from "mongoose";
+jest.setTimeout(30000);//increase the default timeout 5000 to 300000
 describe("TEST: USER UPDATER TEST CASE", () => {
 
     beforeAll(async () => {
