@@ -1,7 +1,7 @@
 /*
-*   Copyright (c) 2024 Dilshan Ramesh
-*   All rights reserved.
-*/
+ *   Copyright (c) 2024 Dilshan Ramesh
+ *   All rights reserved.
+ */
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,8 +22,10 @@ import {
 } from "@/components/ui/select";
 import useUpdateSystemUser from "@/hooks/useUpdateSystemUser";
 
-export default function Page({ params: { userId }}: {
-  params: { userId: string }
+export default function Page({
+  params: { userId },
+}: {
+  params: { userId: string };
 }) {
   const { form, handleUserCreate } = useUpdateSystemUser({ userId: userId });
 
@@ -45,7 +47,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your First Name"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
-                      value={field.value ?? ""} 
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -64,7 +66,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your Last Name"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
-                      value={field.value ?? ""} 
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -83,7 +85,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your email"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
-                      value={field.value ?? ""} 
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -102,7 +104,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your Contact Number"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
-                      value={field.value ?? ""} 
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -116,20 +118,13 @@ export default function Page({ params: { userId }}: {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gender</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value ?? ""} 
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a Gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="M">Male</SelectItem>
-                      <SelectItem value="F">Female</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <select {...field} className="flex w-full rounded-md border border-gray-300 p-2 shadow-sm">
+                      <option value="">Select a Gender</option>
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                    </select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -140,21 +135,14 @@ export default function Page({ params: { userId }}: {
               name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role - {field.value}</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value ?? ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a Role" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="user">User</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Role</FormLabel>
+                  <FormControl>
+                    <select {...field} className="flex w-full rounded-md border border-gray-300 p-2 shadow-sm">
+                      <option value="">Select a Gender</option>
+                      <option value="Muser">User</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -171,7 +159,7 @@ export default function Page({ params: { userId }}: {
                       placeholder="Enter your NIC"
                       className="rounded-md border border-gray-300 p-3 shadow-sm"
                       {...field}
-                      value={field.value ?? ""} 
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
