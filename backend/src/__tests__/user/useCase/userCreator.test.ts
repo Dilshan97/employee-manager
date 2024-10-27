@@ -5,7 +5,7 @@
 */
 import { StatusCodes } from "http-status-codes";
 import TestDbConfig from "../../../config/test-db.config";
-import userCreator from "../../../modules/user/useCase/userCreator";
+import UserCreator from "../../../modules/user/useCase/userCreator";
 import { IUserMutationSanitizedInputs } from "../../../modules/user/user.interface";
 jest.setTimeout(30000);//increase the default timeout 5000 to 300000
 describe("TEST: USER CREATOR TEST CASE", () => {
@@ -19,6 +19,14 @@ describe("TEST: USER CREATOR TEST CASE", () => {
         await TestDbConfig.closeDatabase();
     });
 
+    beforeEach(async () => {
+        await TestDbConfig.loadTestDataToMemoryDb();
+    });
+
+    afterEach(async () => {
+        await TestDbConfig.clearMemoryDatabase();
+    });
+
     test("should fail if user is exist", async () => {
         try {
             const sanitizedInputs: IUserMutationSanitizedInputs = {
@@ -30,7 +38,7 @@ describe("TEST: USER CREATOR TEST CASE", () => {
                 role: "user",
                 NIC: "234567890V"
             };
-            await userCreator.createUser(sanitizedInputs);
+            await UserCreator.createUser(sanitizedInputs);
         } catch(error: any) {
             expect(error.statusCode).toStrictEqual(StatusCodes.FORBIDDEN);
         }
@@ -46,7 +54,7 @@ describe("TEST: USER CREATOR TEST CASE", () => {
             role: "user",
             NIC: "999999999V"
         };
-        const user = await userCreator.createUser(sanitizedInputs);
+        const user = await UserCreator.createUser(sanitizedInputs);
         expect(user).toHaveProperty("id");
         expect(user).toHaveProperty("firstName", sanitizedInputs.firstName);
         expect(user).toHaveProperty("lastName", sanitizedInputs.lastName);
