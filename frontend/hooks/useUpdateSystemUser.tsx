@@ -39,6 +39,7 @@ const useUpdateSystemUser = ({ userId }: useUpdateSystemUserProps) => {
       .regex(/^\+94\d{9}$/, { message: "Invalid Phone Number format" }),
     gender: z.enum(["M", "F"], {
       required_error: "Gender is required",
+      invalid_type_error: "Gender must be either 'M' or 'F'",
     }),
     role: z.string({ required_error: "Role is required" }),
     NIC: z
@@ -76,9 +77,9 @@ const useUpdateSystemUser = ({ userId }: useUpdateSystemUserProps) => {
         lastName: systemUser.lastName || "",
         email: systemUser.email || "",
         phoneNumber: systemUser.phoneNumber || "",
-        gender: systemUser.gender === "M" ? "M" : "F", 
+        gender: systemUser.gender === "M"? "M" : "F", 
         role: systemUser.role || "user",
-        NIC: systemUser.NIC,
+        NIC: systemUser.NIC || "",
       });
     }
   }, [systemUser, form]);
