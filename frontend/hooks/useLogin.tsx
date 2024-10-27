@@ -65,7 +65,7 @@ const useLogin = () => {
   );
 
   const handleLogout = useCallback(async () => {
-    await dispatch(logout(""))
+    await dispatch(logout())
       .unwrap()
       .then(() => {
         Cookies.remove("accessToken");
