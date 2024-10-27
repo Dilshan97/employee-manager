@@ -5,9 +5,9 @@
 import User from "../user.model";
 import UserService from "../user.service";
 import ForbiddenError from "../../error/error.classes/ForbiddenError";
-import { IUserMutationSanitizedInputs } from "../user.interface";
+import { IUserModel, IUserMutationSanitizedInputs } from "../user.interface";
 
-const createUser = async (sanitizedInputs: IUserMutationSanitizedInputs) => {
+const createUser = async (sanitizedInputs: IUserMutationSanitizedInputs): Promise<IUserModel> => {
 
     const dbUser = await UserService.findByEmail(sanitizedInputs.email);
 

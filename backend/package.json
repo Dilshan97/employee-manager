@@ -1,10 +1,13 @@
 {
-  "name": "backend",
+  "name": "employee-manager-backend",
   "version": "1.0.0",
   "description": "employee manager backend",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "ts-node-dev src/server.ts",
+    "test": "jest --runInBand",
+    "dev:ts": "tsc -w",
+    "dev:js": "nodemon build/server.js",
+    "dev": "concurrently npm:dev:*",
     "build": "tsc",
     "start": "node build/server.js"
   },
@@ -15,9 +18,14 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.6.3"
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "nodemon": "^2.0.22",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.3",
+    "mongodb-memory-server": "^10.0.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
