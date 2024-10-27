@@ -1,4 +1,14 @@
 services:
+  redis-service:
+    image: redis:latest
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    command: ["redis-server"]
+    restart: always
+
   backend:
     build: ./backend
     container_name: employee_manager_backend_container
@@ -14,20 +24,22 @@ services:
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=h4fa6Jg9IPuqZMAj
       - MONGO_DATABASE_NAME=employee_manager_v1
-      - REDIS_URL=redis://localhost:6379
-  
+      - REDIS_URL=redis://redis-service:6379
+    depends_on:
+      redis-service:
+        condition: service_healthy
+
   frontend:
     build: ./frontend
     container_name: employee_manager_frontend_container
     ports:
       - 3000:3000
     stdin_open: true
-    tty: true  
+    tty: true
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
       - BACKEND_URL=http://localhost:4000
     depends_on:
-      - backend    
-
+      - backend
