@@ -27,7 +27,7 @@ client.on("ready", () => {
 });
 
 client.on("error", (err: any) => {
-  // console.log('ERROR : ' + err.message);
+  console.log('ERROR : ' + err.message);
 });
 
 client.on("end", () => {
